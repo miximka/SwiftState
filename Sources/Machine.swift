@@ -63,6 +63,8 @@ public class Machine<S: StateType, E: EventType>
         return self._state
     }
 
+    public var onStateChange: ((Void) -> Void)?
+    
     //--------------------------------------------------
     // MARK: - hasRoute
     //--------------------------------------------------
@@ -195,7 +197,9 @@ public class Machine<S: StateType, E: EventType>
 
             // update state
             self._state = toState
-
+            
+            onStateChange?()
+            
             // perform validHandlers after updating state.
             for handlerInfo in validHandlerInfos {
                 handlerInfo.handler(Context(event: event, fromState: fromState, toState: toState, userInfo: userInfo))
@@ -415,6 +419,7 @@ public class Machine<S: StateType, E: EventType>
 
     // MARK: addHandler(event:)
 
+    @discardableResult
     public func addHandler(event: E, order: HandlerOrder = _defaultOrder, handler: Machine.Handler) -> Disposable
     {
         return self.addHandler(event: .some(event), order: order, handler: handler)
