@@ -183,6 +183,7 @@ public class Machine<S: StateType, E: EventType>
         return nil
     }
 
+    @discardableResult
     public func tryEvent(_ event: E, userInfo: Any? = nil) -> Bool
     {
         let fromState = self.state
@@ -316,6 +317,7 @@ public class Machine<S: StateType, E: EventType>
 
     // MARK: removeRoute
 
+    @discardableResult
     private func _removeRoute(_ _routeID: _RouteID<S, E>) -> Bool
     {
         guard let event = _routeID.event else { return false }
@@ -356,6 +358,7 @@ public class Machine<S: StateType, E: EventType>
 
     // MARK: addRouteMapping
 
+    @discardableResult
     public func addRouteMapping(_ routeMapping: RouteMapping) -> Disposable
     {
         let key = _createUniqueString()
@@ -394,6 +397,7 @@ public class Machine<S: StateType, E: EventType>
 
     // MARK: removeRouteMapping
 
+    @discardableResult
     private func _removeRouteMapping(_ routeMappingID: _RouteMappingID) -> Bool
     {
         if self._routeMappings[routeMappingID.key] != nil {
@@ -469,6 +473,7 @@ public class Machine<S: StateType, E: EventType>
 
     // MARK: removeHandler
 
+    @discardableResult
     private func _removeHandler(_ handlerID: _HandlerID<S, E>) -> Bool
     {
         if let event = handlerID.event {
