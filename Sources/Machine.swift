@@ -73,7 +73,7 @@ public class Machine<S: StateType, E: EventType>
     public func hasRoute(event: E, transition: Transition<S>, userInfo: Any? = nil) -> Bool
     {
         guard let fromState = transition.fromState.rawValue,
-            toState = transition.toState.rawValue else
+            let toState = transition.toState.rawValue else
         {
             assertionFailure("State = `.Any` is not supported for `hasRoute()` (always returns `false`)")
             return false
@@ -145,7 +145,7 @@ public class Machine<S: StateType, E: EventType>
     {
         for mapping in self._routeMappings.values {
             if let preferredToState = mapping(event: event, fromState: fromState, userInfo: userInfo)
-                where preferredToState == toState || toState == nil
+                , preferredToState == toState || toState == nil
             {
                 return preferredToState
             }
@@ -385,7 +385,7 @@ public class Machine<S: StateType, E: EventType>
         let handlerDisposable = self._addHandler(event: .any, order: order) { context in
 
             guard let preferredToState = routeMapping(event: context.event, fromState: context.fromState, userInfo: context.userInfo)
-                where preferredToState == context.toState else
+                , preferredToState == context.toState else
             {
                 return
             }

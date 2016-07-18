@@ -50,7 +50,7 @@ public final class StateMachine<S: StateType, E: EventType>: Machine<S, E>
     public func hasRoute(_ transition: Transition<S>, userInfo: Any? = nil) -> Bool
     {
         guard let fromState = transition.fromState.rawValue,
-            toState = transition.toState.rawValue else
+            let toState = transition.toState.rawValue else
         {
             assertionFailure("State = `.Any` is not supported for `hasRoute()` (always returns `false`)")
             return false
@@ -118,6 +118,7 @@ public final class StateMachine<S: StateType, E: EventType>: Machine<S, E>
     }
 
     /// - Note: This method also tries state-change for event-based-routes.
+    @discardableResult
     public func tryState(_ toState: S, userInfo: Any? = nil) -> Bool
     {
         let fromState = self.state
@@ -238,6 +239,7 @@ public final class StateMachine<S: StateType, E: EventType>: Machine<S, E>
 
     // MARK: removeRoute
 
+    @discardableResult
     private func _removeRoute(_ _routeID: _RouteID<S, E>) -> Bool
     {
         guard _routeID.event == nil else {
@@ -294,6 +296,7 @@ public final class StateMachine<S: StateType, E: EventType>: Machine<S, E>
 
     // MARK: removeHandler
 
+    @discardableResult
     private func _removeHandler(_ handlerID: _HandlerID<S, E>) -> Bool
     {
         if let transition = handlerID.transition {
@@ -490,7 +493,7 @@ public final class StateMachine<S: StateType, E: EventType>: Machine<S, E>
             guard context.event == nil else { return }
 
             guard let preferredToStates = routeMapping(fromState: context.fromState, userInfo: context.userInfo)
-                where preferredToStates.contains(context.toState) else
+                , preferredToStates.contains(context.toState) else
             {
                 return
             }
@@ -506,6 +509,7 @@ public final class StateMachine<S: StateType, E: EventType>: Machine<S, E>
 
     // MARK: removeStateRouteMapping
 
+    @discardableResult
     private func _removeStateRouteMapping(_ routeMappingID: _RouteMappingID) -> Bool
     {
         if self._routeMappings[routeMappingID.key] != nil {
