@@ -235,6 +235,7 @@ public class Machine<S: StateType, E: EventType>
 
     // MARK: addRoutes(event:)
 
+    @discardableResult
     public func addRoutes(event: E, transitions: [Transition<S>], condition: Machine.Condition? = nil) -> Disposable
     {
         return self.addRoutes(event: .some(event), transitions: transitions, condition: condition)
@@ -462,6 +463,7 @@ public class Machine<S: StateType, E: EventType>
 
     // MARK: addErrorHandler
 
+    @discardableResult
     public func addErrorHandler(order: HandlerOrder = _defaultOrder, handler: Handler) -> Disposable
     {
         let key = _createUniqueString()
